@@ -43,8 +43,8 @@ export interface UseTranslationOptions {
   i18n?: i18next.i18n;
   useSuspense?: boolean;
 }
-export type UseTranslationResponse = [i18next.TFunction, i18next.i18n, boolean] & {
-  t: i18next.TFunction;
+export type UseTranslationResponse = [i18next.FormatFunction, i18next.i18n, boolean] & {
+  t: i18next.FormatFunction;
   i18n: i18next.i18n;
   ready: boolean;
 };
@@ -91,7 +91,7 @@ export const I18nContext: React.Context<i18next.i18n>;
 
 export interface TranslationProps {
   children: (
-    t: i18next.TFunction,
+    t: i18next.FormatFunction,
     options: {
       i18n: i18next.i18n;
       lng: string;
