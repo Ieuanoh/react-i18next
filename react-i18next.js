@@ -432,7 +432,7 @@
         args[_key] = arguments[_key];
       }
 
-      if (typeof args[0] === 'string') args[0] = `react-i18next:: ${args[0]}`;
+      if (typeof args[0] === 'string') args[0] = "react-i18next:: ".concat(args[0]);
       console.warn(...args);
     }
   }
@@ -485,7 +485,7 @@
     if (lng.toLowerCase() === 'cimode') return true;
 
     const loadNotPending = (l, n) => {
-      const loadState = i18n.services.backendConnector.state[`${l}|${n}`];
+      const loadState = i18n.services.backendConnector.state["".concat(l, "|").concat(n)];
       return loadState === -1 || loadState === 2;
     }; // loaded -> SUCCESS
 
@@ -522,26 +522,26 @@
     children.forEach((child, i) => {
       // const isElement = React.isValidElement(child);
       // const elementKey = `${index !== 0 ? index + '-' : ''}${i}:${typeof child.type === 'function' ? child.type.name : child.type || 'var'}`;
-      const elementKey = `${i}`;
+      const elementKey = "".concat(i);
 
       if (typeof child === 'string') {
-        mem = `${mem}${child}`;
+        mem = "".concat(mem).concat(child);
       } else if (hasChildren(child)) {
         const elementTag = keepArray.indexOf(child.type) > -1 && Object.keys(child.props).length === 1 && typeof hasChildren(child) === 'string' ? child.type : elementKey;
 
         if (child.props && child.props.i18nIsDynamicList) {
           // we got a dynamic list like "<ul>{['a', 'b'].map(item => ( <li key={item}>{item}</li> ))}</ul>""
           // the result should be "<0></0>" and not "<0><0>a</0><1>b</1></0>"
-          mem = `${mem}<${elementTag}></${elementTag}>`;
+          mem = "".concat(mem, "<").concat(elementTag, "></").concat(elementTag, ">");
         } else {
           // regular case mapping the inner children
-          mem = `${mem}<${elementTag}>${nodesToString('', getChildren(child), i + 1, i18nOptions)}</${elementTag}>`;
+          mem = "".concat(mem, "<").concat(elementTag, ">").concat(nodesToString('', getChildren(child), i + 1, i18nOptions), "</").concat(elementTag, ">");
         }
       } else if (React__default.isValidElement(child)) {
         if (keepArray.indexOf(child.type) > -1 && Object.keys(child.props).length === 0) {
-          mem = `${mem}<${child.type}/>`;
+          mem = "".concat(mem, "<").concat(child.type, "/>");
         } else {
-          mem = `${mem}<${elementKey}></${elementKey}>`;
+          mem = "".concat(mem, "<").concat(elementKey, "></").concat(elementKey, ">");
         }
       } else if (typeof child === 'object') {
         const clone = _objectSpread({}, child);
@@ -551,15 +551,15 @@
         const keys = Object.keys(clone);
 
         if (format && keys.length === 1) {
-          mem = `${mem}{{${keys[0]}, ${format}}}`;
+          mem = "".concat(mem, "{{").concat(keys[0], ", ").concat(format, "}}");
         } else if (keys.length === 1) {
-          mem = `${mem}{{${keys[0]}}}`;
+          mem = "".concat(mem, "{{").concat(keys[0], "}}");
         } else {
           // not a valid interpolation object (can only contain one value plus format)
-          warn(`react-i18next: the passed in object contained more than one variable - the object should look like {{ value, format }} where format is optional.`, child);
+          warn("react-i18next: the passed in object contained more than one variable - the object should look like {{ value, format }} where format is optional.", child);
         }
       } else {
-        warn(`Trans: the passed in value is invalid - seems you passed in a variable like {number} - please pass in variables for interpolation as full objects like {{number}}.`, child);
+        warn("Trans: the passed in value is invalid - seems you passed in a variable like {number} - please pass in variables for interpolation as full objects like {{number}}.", child);
       }
     });
     return mem;
@@ -587,7 +587,7 @@
     targetString = i18n.services.interpolator.interpolate(targetString, _objectSpread({}, data, combinedTOpts), i18n.language); // parse ast from string with additional wrapper tag
     // -> avoids issues in parser removing prepending text nodes
 
-    const ast = htmlParseStringify2.parse(`<0>${targetString}</0>`);
+    const ast = htmlParseStringify2.parse("<0>".concat(targetString, "</0>"));
 
     function mapAST(reactNodes, astNodes) {
       if (Object.prototype.toString.call(reactNodes) !== '[object Array]') reactNodes = [reactNodes];
@@ -623,14 +623,14 @@
           } else if (isNaN(node.name) && i18nOptions.transSupportBasicHtmlNodes) {
             if (node.voidElement) {
               mem.push(React__default.createElement(node.name, {
-                key: `${node.name}-${i}`
+                key: "".concat(node.name, "-").concat(i)
               }));
             } else {
               const inner = mapAST(reactNodes
               /* wrong but we need something */
               , node.children);
               mem.push(React__default.createElement(node.name, {
-                key: `${node.name}-${i}`
+                key: "".concat(node.name, "-").concat(i)
               }, inner));
             }
           } else if (typeof child === 'object' && !isElement) {
@@ -829,7 +829,7 @@
         return React__default.createElement(WrappedComponent, passDownProps);
       }
 
-      I18nextWithTranslation.displayName = `withI18nextTranslation(${getDisplayName(WrappedComponent)})`;
+      I18nextWithTranslation.displayName = "withI18nextTranslation(".concat(getDisplayName(WrappedComponent), ")");
       return options.withRef ? React__default.forwardRef(I18nextWithTranslation) : I18nextWithTranslation;
     };
   }
@@ -894,7 +894,7 @@
       }
 
       I18nextWithSSR.getInitialProps = composeInitialProps(WrappedComponent);
-      I18nextWithSSR.displayName = `withI18nextSSR(${getDisplayName(WrappedComponent)})`;
+      I18nextWithSSR.displayName = "withI18nextSSR(".concat(getDisplayName(WrappedComponent), ")");
       return I18nextWithSSR;
     };
   }
